@@ -1,0 +1,115 @@
+---
+title: "Gráficos del sistema base de R"
+subtitle: Curso de programación ps53
+date: 2024/10/03
+author: "Melissa Rodríguez"
+format:
+  html:
+    toc: true
+theme: yeti 
+lang: es
+---
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+<!--  format: docx.....word-->
+<!--  format: pptx.....powerpoint-->
+
+---
+
+
+# *Gráficos del sistema de R*
+```{r}
+#| label: gráfrico-dispersion-cars
+#| code-fold: true
+plot(cars)
+```
+## Peso del Pollo
+```{r}
+# Gráfico de dispersón del conjunto ChickWeight 
+plot(
+  x <- ChickWeight$Time,
+  y <- ChickWeight$weight,
+  
+  main = "Peso de los pollos a partir de su nacimiento",
+  xlab="Días desde el nacimiento", 
+  ylab="Peso en gramos"
+)
+
+```
+## Educación vrs Abortos
+```{r}
+# Crear el gráfico de dispersión de educación vrs abortos inducidos
+plot(
+      infert$education, infert$induced,
+      main = "Abortos inducidos por nivel de educación",
+      xlab = "Nivel de educación",
+      ylab = "Abortos inducidos",
+)
+```
+
+```{r}
+plot(
+  x <- infert$education, 
+  y <- infert$induced,
+  
+  main = "Abortos inducidos por nivel de educación",
+  xlab = "Nivel de educación",
+  ylab = "Abortos inducidos"
+)
+```
+
+## **Abortos espontaneos para cada edad** 
+```{r}
+
+# Calcular la suma de abortos espontáneos por cada edad
+abortos_por_edad <- tapply(infert$spontaneous, infert$age, sum)
+
+# Crear gráfico de barras 
+barplot(abortos_por_edad,
+     xlab = "Edad",
+     ylab = "Abortos espontáneos",
+     main = "Gráfico de barras: Abortos espontáneos por edad",
+     col= "lightblue"
+     )
+
+```
+###Relación entre la longitud del pico y la masa de pinguinos.
+
+```{r}
+# Gráfico de dispersión de longitud del pico vs masa (peso)
+penguins |>
+  ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(size = 1) +
+  geom_smooth(method = "loess", se = FALSE) +
+  ggtitle("Longitud del pico vs. masa") +
+  xlab("Longitud del pico (mm)") +
+  ylab("Masa (g)") +
+  labs(color = "Especie", shape = "Especie")
+```
+
+
+```{r}
+labs(color = "Especie", shape = "Especie")
+```
+###Relación entre la longitud del pico y la masa de pinguinos por especie
+
+```{r}
+# Gráfico de dispersión de longitud del pico vs masa (peso) por especie
+penguins |>
+  ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species),
+             size = 2) +
+  geom_smooth(method = "lm", se = FALSE, aes(color = species)) +
+  scale_color_manual(values = c("darkorange", "darkorchid", "cyan4")) +
+  ggtitle("Longitud del pico vs. masa por especie") +
+  xlab("Longitud del pico (mm)") +
+  ylab("Masa (g)") +
+  labs(color = "Especie", shape = "Especie")
+```
+
+
+
